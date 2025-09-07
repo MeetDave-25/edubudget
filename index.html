@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Budget Tracker | BCA Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-wallet"></i>
+                <h1>Student Budget Tracker</h1>
+            </div>
+            <div class="nav-info">
+                <span id="currentDate"></span>
+                <div class="student-info">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>BCA Student</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Dashboard Container -->
+    <main class="container">
+        <!-- Dashboard Overview Section -->
+        <section class="dashboard-overview">
+            <h2><i class="fas fa-chart-pie"></i> Financial Dashboard</h2>
+            <div class="stats-container">
+                <div class="stat-card total-budget">
+                    <div class="stat-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Budget</h3>
+                        <p class="amount" id="totalBudget">₹0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card total-spent">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Spent</h3>
+                        <p class="amount" id="totalSpent">₹0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card remaining-budget">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Remaining</h3>
+                        <p class="amount" id="remainingBudget">₹0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card savings-rate">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Savings Rate</h3>
+                        <p class="amount" id="savingsRate">0%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Input Section -->
+        <section class="budget-input-section">
+            <h2><i class="fas fa-money-bill-wave"></i> Set Monthly Budget</h2>
+            <div class="input-container">
+                <div class="input-group">
+                    <input type="number" id="budgetInput" placeholder="Enter your monthly budget (₹)">
+                    <button onclick="setBudget()" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Set Budget
+                    </button>
+                </div>
+                <p class="input-help">💡 Tip: Include all your monthly income (pocket money, part-time job, etc.)</p>
+            </div>
+        </section>
+
+        <!-- Add Expense Section -->
+        <section class="expense-input-section">
+            <h2><i class="fas fa-plus-circle"></i> Add New Expense</h2>
+            <div class="expense-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expenseDescription">Description</label>
+                        <input type="text" id="expenseDescription" placeholder="What did you buy?">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseAmount">Amount (₹)</label>
+                        <input type="number" id="expenseAmount" placeholder="0.00" step="0.01">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expenseCategory">Category</label>
+                        <select id="expenseCategory">
+                            <option value="">Select Category</option>
+                            <option value="Food">🍕 Food & Dining</option>
+                            <option value="Transportation">🚌 Transportation</option>
+                            <option value="Education">📚 Books & Education</option>
+                            <option value="Entertainment">🎬 Entertainment</option>
+                            <option value="Shopping">🛍️ Shopping & Clothes</option>
+                            <option value="Health">🏥 Health & Medicine</option>
+                            <option value="Others">📦 Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDate">Date</label>
+                        <input type="date" id="expenseDate">
+                    </div>
+                </div>
+                
+                <button onclick="addExpense()" class="btn btn-primary btn-full">
+                    <i class="fas fa-plus"></i> Add Expense
+                </button>
+            </div>
+        </section>
+
+        <!-- Expense List Section -->
+        <section class="expense-list-section">
+            <h2><i class="fas fa-list-ul"></i> Recent Expenses</h2>
+            <div class="expense-controls">
+                <div class="filter-group">
+                    <select id="categoryFilter" onchange="filterExpenses()">
+                        <option value="">All Categories</option>
+                        <option value="Food">Food & Dining</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Education">Books & Education</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Shopping">Shopping & Clothes</option>
+                        <option value="Health">Health & Medicine</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+            </div>
+            <div class="expense-list" id="expenseList">
+                <div class="no-data">
+                    <i class="fas fa-receipt"></i>
+                    <p>No expenses recorded yet!</p>
+                    <p>Start by adding your first expense above.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Analysis Section -->
+        <section class="category-analysis-section">
+            <h2><i class="fas fa-chart-bar"></i> Spending by Category</h2>
+            <div class="category-grid" id="categoryGrid">
+                <div class="no-data">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>Add expenses to see category breakdown</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Suggestions Section -->
+        <section class="ai-suggestions-section">
+            <h2><i class="fas fa-robot"></i> Smart Money Tips</h2>
+            <div class="suggestions-container" id="suggestionsContainer">
+                <div class="suggestion-card default">
+                    <div class="suggestion-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>General Student Tips</h3>
+                    </div>
+                    <ul class="suggestion-list">
+                        <li>📝 Track every expense, no matter how small</li>
+                        <li>💰 Follow the 50/30/20 rule: 50% needs, 30% wants, 20% savings</li>
+                        <li>🎓 Always ask for student discounts</li>
+                        <li>🍳 Cook meals at home to save money</li>
+                        <li>📚 Buy used textbooks or borrow from library</li>
+                        <li>🚌 Use student transport passes</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spending Analysis Table -->
+        <section class="analysis-table-section">
+            <h2><i class="fas fa-analytics"></i> Detailed Spending Analysis</h2>
+            <div class="table-container">
+                <table class="analysis-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Amount Spent</th>
+                            <th>% of Budget</th>
+                            <th>Status</th>
+                            <th>AI Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analysisTableBody">
+                        <tr>
+                            <td colspan="5" class="no-data-cell">
+                                <i class="fas fa-table"></i>
+                                Add expenses to see detailed analysis
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Monthly Progress Section -->
+        <section class="progress-section">
+            <h2><i class="fas fa-calendar-check"></i> Monthly Progress</h2>
+            <div class="progress-container">
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span>Budget Usage</span>
+                        <span id="budgetUsagePercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="budgetProgressBar"></div>
+                    </div>
+                </div>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <span>Days Passed</span>
+                        <span id="daysPassed">0</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span>Days Remaining</span>
+                        <span id="daysRemaining">30</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Student Budget Tracker | BCA Semester 3 Project</p>
+            <p>Created with ❤️ by BCA Students</p>
+        </div>
+    </footer>
+
+    <!-- Success/Error Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
